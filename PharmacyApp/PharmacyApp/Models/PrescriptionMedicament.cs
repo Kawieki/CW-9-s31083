@@ -15,5 +15,11 @@ public class PrescriptionMedicament
     
     [Required]
     [MaxLength(100)]
-    public int Details { get; set; }
+    public string Details { get; set; }
+
+    [ForeignKey(nameof(IdMedicament))]
+    public virtual Medicament Medicament { get; set; }
+    
+    [ForeignKey(nameof(IdPrescription))]
+    public virtual Prescription Prescription { get; set; }
 }

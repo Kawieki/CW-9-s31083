@@ -8,7 +8,7 @@ public class Prescription
     public int IdPrescription { get; set; }
     
     public DateTime Date { get; set; }
-    public DateTime DueTime { get; set; }
+    public DateTime DueDate { get; set; }
     
     public int IdPatient { get; set; }
     public int IdDoctor { get; set; }
@@ -19,5 +19,5 @@ public class Prescription
     [ForeignKey(nameof(IdDoctor))]
     public virtual Doctor Doctor { get; set; }
 
-    public ICollection<PrescriptionMedicament> PrescriptionMedicaments { get; set; }
+    public virtual ICollection<PrescriptionMedicament> PrescriptionMedicaments { get; set; }
 }
