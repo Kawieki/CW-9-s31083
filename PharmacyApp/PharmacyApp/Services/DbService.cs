@@ -42,7 +42,7 @@ public class DbService(AppDbContext data) : IDbService
                     LastName = pr.Doctor.LastName,
                     Email = pr.Doctor.Email
                 }
-            }).ToList()
+            }).OrderBy(d => d.DueDate).ToList()
         }).FirstOrDefaultAsync(e => e.IdPatient == id);
         return result ?? throw new NotFoundException($"Patient with id: {id} not found");
     }
@@ -88,7 +88,7 @@ public class DbService(AppDbContext data) : IDbService
         {
             var medicament = await data.Medicament.FindAsync(m.IdMedicament);
             if (medicament == null)
-                throw new NotFoundException($"Lek o ID {m.IdMedicament} nie istnieje.");
+                throw new NotFoundException($"Medicament with id: {m.IdMedicament} does not exist.");
 
             prescription.PrescriptionMedicaments.Add(new PrescriptionMedicament
             {

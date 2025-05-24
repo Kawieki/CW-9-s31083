@@ -43,7 +43,8 @@ public class AppDbContext : DbContext
     modelBuilder.Entity<Prescription>().HasData(
         new Prescription { IdPrescription = 1, Date = new DateTime(2023, 10, 1), DueDate = new DateTime(2023, 10, 8), IdPatient = 1, IdDoctor = 1 },
         new Prescription { IdPrescription = 2, Date = new DateTime(2023, 10, 2), DueDate = new DateTime(2023, 10, 12), IdPatient = 2, IdDoctor = 2 },
-        new Prescription { IdPrescription = 3, Date = new DateTime(2023, 10, 3), DueDate = new DateTime(2023, 10, 8), IdPatient = 3, IdDoctor = 3 }
+        new Prescription { IdPrescription = 3, Date = new DateTime(2023, 10, 3), DueDate = new DateTime(2023, 10, 8), IdPatient = 3, IdDoctor = 3 },
+        new Prescription { IdPrescription = 4, Date = new DateTime(2023, 10, 5), DueDate = new DateTime(2023, 10, 15), IdPatient = 1, IdDoctor = 2 }
     );
 
     // Seed PrescriptionMedicaments
@@ -51,7 +52,8 @@ public class AppDbContext : DbContext
         new PrescriptionMedicament { IdMedicament = 1, IdPrescription = 1, Dose = 2, Details = "Take after meals" },
         new PrescriptionMedicament { IdMedicament = 2, IdPrescription = 2, Dose = 1, Details = "Take before bed" },
         new PrescriptionMedicament { IdMedicament = 3, IdPrescription = 3, Dose = 3, Details = "Take every 6 hours" },
-    new PrescriptionMedicament { IdMedicament = 3, IdPrescription = 1, Dose = 3, Details = "Take every 6 hours" }
+        new PrescriptionMedicament { IdMedicament = 3, IdPrescription = 1, Dose = 3, Details = "Take every 6 hours" },
+        new PrescriptionMedicament { IdMedicament = 2, IdPrescription = 4, Dose = 1, Details = "Take once daily" }
     );
 }
 }

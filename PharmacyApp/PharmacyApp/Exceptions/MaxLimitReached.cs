@@ -1,3 +1,3 @@
 namespace PharmacyApp.Exceptions;
 
-public class MaxLimitReached(string message): Exception;
+public class MaxLimitReached(string message): Exception(message);

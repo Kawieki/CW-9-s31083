@@ -22,5 +22,18 @@ public class PrescriptionsController(IDbService service): ControllerBase
         {
             return NotFound(e.Message);
         }
+        catch (DateValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (MaxLimitReached e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, $"An unexpected error has occured {e.Message}");
+        }
+        
     }
 }
