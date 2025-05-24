@@ -27,9 +27,9 @@ public class AppDbContext : DbContext
 
     // Seed Patients
     modelBuilder.Entity<Patient>().HasData(
-        new Patient { IdPatient = 1, FirstName = "Michael", LastName = "Brown", BirthDate = new DateTime(1985, 5, 20) },
-        new Patient { IdPatient = 2, FirstName = "Sarah", LastName = "Davis", BirthDate = new DateTime(1990, 8, 15) },
-        new Patient { IdPatient = 3, FirstName = "David", LastName = "Wilson", BirthDate = new DateTime(2000, 3, 10) }
+        new Patient { IdPatient = 1, FirstName = "Michael", LastName = "Brown", Birthdate = new DateTime(1985, 5, 20) },
+        new Patient { IdPatient = 2, FirstName = "Sarah", LastName = "Davis", Birthdate = new DateTime(1990, 8, 15) },
+        new Patient { IdPatient = 3, FirstName = "David", LastName = "Wilson", Birthdate = new DateTime(2000, 3, 10) }
     );
 
     // Seed Medicaments

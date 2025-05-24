@@ -12,7 +12,6 @@ public class PatientsController(IDbService service): ControllerBase
     public async Task<IActionResult> GetPatientsAsync([FromRoute] int id)
     {
         if (id < 1) return BadRequest("Id must be greater than 0");
-   
         try
         {
             var patientDetails = await service.GetPatientDetailsAsync(id);
