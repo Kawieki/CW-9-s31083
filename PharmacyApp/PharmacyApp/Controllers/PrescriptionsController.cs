@@ -11,7 +11,7 @@ namespace PharmacyApp.Controllers;
 public class PrescriptionsController(IDbService service): ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateNewPrescription([FromBody] PrescriptionCreateDto prescription)
+    public async Task<IActionResult> CreateNewPrescriptionAsync([FromBody] PrescriptionCreateDto prescription)
     {
         try
         {
