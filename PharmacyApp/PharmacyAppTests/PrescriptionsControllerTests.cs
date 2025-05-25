@@ -83,6 +83,40 @@ public class PrescriptionsControllerTests
         Assert.Equal("A prescription can include a maximum of 10 medicaments.", badRequest.Value);
     }
     
+    [Fact]
+    public async Task CreateNewPrescriptionAsync_ReturnsNotFound_WhenMedicamentNotExists()
+    {
+        // Arrange
+        var dto = GetValidDto();
+        dto.Medicaments[0].IdMedicament = 2137;
+        _mockService.Setup(s => s.CreateNewPrescriptionAsync(dto))
+            .ThrowsAsync(new NotFoundException("Medicament with id: 2137 does not exist."));
+
+        // Act
+        var result = await _controller.CreateNewPrescriptionAsync(dto);
+
+        // Assert
+        var notFound = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal("Medicament with id: 2137 does not exist.", notFound.Value);
+    }
+    
+    [Fact]
+    public async Task CreateNewPrescriptionAsync_AddsNewPatient_WhenPatientDoesNotExist()
+    {
+        // Arrange
+        var dto = GetValidDto();
+        dto.Patient.IdPatient = 2137;
+        _mockService.Setup(s => s.CreateNewPrescriptionAsync(dto)).ReturnsAsync(dto);
+
+        // Act
+        var result = await _controller.CreateNewPrescriptionAsync(dto);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(dto, okResult.Value);
+        _mockService.Verify(s => s.CreateNewPrescriptionAsync(dto), Times.Once);
+    }
+    
     private PrescriptionCreateDto GetValidDto() => new()
     {
         Patient = new PatientDto
@@ -98,14 +132,9 @@ public class PrescriptionsControllerTests
         },
         Date = DateTime.Now,
         DueDate =DateTime.Now.AddDays(5),
-        Medicaments = new List<MedicamentDto>
-        {
-            new()
-            {
-                IdMedicament = 1,
-                Dose = 1,
-                Details = "Take after meal"
-            }
-        }
+        Medicaments =
+        [
+            new MedicamentDto(idMedicament: 1, dose: 1, details: "Take after meal")
+        ]
     };
 }

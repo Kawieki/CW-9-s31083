@@ -24,6 +24,17 @@ public class DoctorDto
 
 public class MedicamentDto
 {
+    public MedicamentDto()
+    {
+    }
+
+    public MedicamentDto(int idMedicament, int? dose, string details)
+    {
+        IdMedicament = idMedicament;
+        Dose = dose;
+        Details = details;
+    }
+
     public int IdMedicament { get; set; }
     public int? Dose { get; set; }
     public string Details { get; set; }

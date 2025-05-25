@@ -70,4 +70,59 @@ public class PatientsControllerTests
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(patientData, okResult.Value);
     }
+    
+    [Fact]
+    public async Task GetPatientsAsync_ReturnsSortedPrescriptions_WithFullDetails()
+    {
+        // Arrange
+        int patientId = 1;
+        var patientData = new PatientGetDto
+        {
+            IdPatient = patientId,
+            FirstName = "John",
+            LastName = "Doe",
+            Birthdate = new DateTime(1990, 1, 1),
+            Prescriptions = new List<PrescriptionGetDto>
+            {
+                new()
+                {
+                    IdPrescription = 2,
+                    Date = new DateTime(2023, 1, 1),
+                    DueDate = new DateTime(2023, 1, 5),
+                    Medicament = new List<MedicamentPrescriptionGetDto>
+                    {
+                        new() { IdMedicament = 1, Name = "Med1", Dose = 1, Description = "Desc1", Type = "Type1" }
+                    },
+                    Doctor = new DoctorGetDto { IdDoctor = 1, FirstName = "Doc1", LastName = "Last1", Email = "doc1@example.com" }
+                },
+                new()
+                {
+                    IdPrescription = 1,
+                    Date = new DateTime(2023, 1, 2),
+                    DueDate = new DateTime(2023, 1, 6),
+                    Medicament = new List<MedicamentPrescriptionGetDto>
+                    {
+                        new() { IdMedicament = 2, Name = "Med2", Dose = 2, Description = "Desc2", Type = "Type2" }
+                    },
+                    Doctor = new DoctorGetDto { IdDoctor = 2, FirstName = "Doc2", LastName = "Last2", Email = "doc2@example.com" }
+                }
+            }
+        };
+
+        _mockService
+            .Setup(s => s.GetPatientDetailsAsync(patientId))
+            .ReturnsAsync(patientData);
+
+        // Act
+        var result = await _controller.GetPatientsAsync(patientId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnedData = Assert.IsType<PatientGetDto>(okResult.Value);
+        Assert.Equal(2, returnedData.Prescriptions.Count);
+        var prescriptionsList = returnedData.Prescriptions.ToList();
+        Assert.True(prescriptionsList[0].DueDate < prescriptionsList[1].DueDate);
+        Assert.NotNull(prescriptionsList[0].Doctor);
+        Assert.NotNull(prescriptionsList[0].Medicament);
+    }
 }
