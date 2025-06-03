@@ -48,13 +48,16 @@ public class DbService(AppDbContext data) : IDbService
     }
 
     public async Task<PrescriptionCreateDto> CreateNewPrescriptionAsync(PrescriptionCreateDto pr)
+{
+    if (pr.Medicaments.Count > 10)
+        throw new MaxLimitReached("A prescription can include a maximum of 10 medicaments.");
+
+    if (pr.DueDate < pr.Date)
+        throw new DateValidationException("The DueDate must be greater than or equal to the Date.");
+
+    await using var transaction = await data.Database.BeginTransactionAsync();
+    try
     {
-        if (pr.Medicaments.Count > 10) 
-            throw new MaxLimitReached("A prescription can include a maximum of 10 medicaments.");
-
-        if (pr.DueDate < pr.Date)
-            throw new DateValidationException("The DueDate must be greater than or equal to the Date.");
-
         var patient = await data.Patients
             .FirstOrDefaultAsync(p => p.IdPatient == pr.Patient.IdPatient);
 
@@ -100,6 +103,9 @@ public class DbService(AppDbContext data) : IDbService
 
         data.Prescriptions.Add(prescription);
         await data.SaveChangesAsync();
+
+        await transaction.CommitAsync();
+
         return new PrescriptionCreateDto
         {
             Patient = new PatientDto
@@ -123,4 +129,10 @@ public class DbService(AppDbContext data) : IDbService
             }).ToList()
         };
     }
+    catch
+    {
+        await transaction.RollbackAsync();
+        throw;
+    }
+}
 }
