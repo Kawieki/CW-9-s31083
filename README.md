@@ -62,7 +62,7 @@ This is a simple web API for managing a pharmacy's data, including patients, doc
 
     ```bash
     git clone <repository-url>
-    cd CW-9-s31083/PharmacyApp
+    cd PharmacyApp/PharmacyApp
     ```
 
 2.  **Restore dependencies:**
